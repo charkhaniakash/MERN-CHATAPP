@@ -1,4 +1,7 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
+import {generateToken} from "../lib/utils.js";
+
 
 export const signup = async(req, res) => {
   const { fullName, email, password } = req.body;
@@ -8,7 +11,6 @@ export const signup = async(req, res) => {
     }
     const user = await User.findOne({email});
     if(user) return res.status(400).json({message:"User already exists"});
-
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password,salt);
     const newUser = new User(
@@ -18,6 +20,7 @@ export const signup = async(req, res) => {
             password:hashPassword
         }
     );
+
 
     if(newUser){
         generateToken(newUser._id,res);
