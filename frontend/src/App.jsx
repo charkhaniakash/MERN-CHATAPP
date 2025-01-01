@@ -9,6 +9,7 @@ import { axiosInstance } from "./lib/axios";
 import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
 import ProfilePage from "./pages/ProfilePage";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -16,8 +17,6 @@ const App = () => {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
-  console.log("authUser", authUser);
 
   if (isCheckingAuth && !authUser) {
     return <div className="flex justify-center h-screen items-center">
@@ -27,6 +26,7 @@ const App = () => {
 
   return (
     <div>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={authUser ?<HomePage /> : <Navigate to="/login" />} />
