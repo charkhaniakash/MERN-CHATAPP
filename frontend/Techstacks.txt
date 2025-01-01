@@ -1,0 +1,9 @@
+Tailwind css
+
+
+daisyui Framework (Tailwind css)
+
+Zustand
+-------
+
+React State Management — using Zustand like Redux
