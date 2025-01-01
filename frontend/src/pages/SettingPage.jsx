@@ -3,8 +3,8 @@ import { useThemeStore } from "../store/useThemeStore";
 import { THEMES } from "../constants/index.js";
 
 const PREVIEW_MESSAGES = [
-  { id: 1, content: "Hey! How's it going?", isSent: false },
-  { id: 2, content: "I'm doing great! Just working on some new features.", isSent: true },
+  { id: 1, content: "Hey! Akash How's it going?", isSent: false },
+  { id: 2, content: "I'm doing great! Just Learning New Things", isSent: true },
 ];
 
 const SettingPage = () => {
@@ -57,7 +57,7 @@ const SettingPage = () => {
                       J
                     </div>
                     <div>
-                      <h3 className="font-medium text-sm">John Doe</h3>
+                      <h3 className="font-medium text-sm">Akash Charkhani</h3>
                       <p className="text-xs text-base-content/70">Online</p>
                     </div>
                   </div>
