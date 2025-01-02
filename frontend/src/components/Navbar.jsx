@@ -19,7 +19,7 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <MessageCircleCode className="w-5 h-5 text-primary" />
               </div>
-              <h1 className="text-lg font-bold">IntuceoChatty</h1>
+              <h1 className="text-lg font-bold">IntuceoChatBox</h1>
             </Link>
           </div>
 
