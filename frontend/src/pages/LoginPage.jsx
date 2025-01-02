@@ -13,9 +13,10 @@ const LoginPage = () => {
   });
 
   const handleSubmit = (e) => {
-    e.preventDafault();
+    e.preventDefault();
     login(formData);
   };
+  
 
   return (
     <div className="h-screen grid lg:grid-cols-2">
