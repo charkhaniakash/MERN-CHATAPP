@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { useChatStore} from "../store/useChatStore";
+import { useChatStore } from "../store/useChatStore";
 import NoChatMessages from "../components/NoChatMessages";
-import Chat from "../components/ChatContainer";
 import Sidebar from "../components/Sidebar";
 import ChatContainer from "../components/ChatContainer";
 
 const HomePage = () => {
-  const { selectedUser, users ,getUsers,} = useChatStore();
-
+  const { selectedUser, users, getUsers } = useChatStore();
 
   return (
     <div className="h-screen bg-base-200">
@@ -15,7 +13,18 @@ const HomePage = () => {
         <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-8rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
             <Sidebar />
-            {!selectedUser ? <NoChatMessages /> : <ChatContainer />}
+            {!selectedUser ? (
+              <NoChatMessages>
+                <h2 className="text-2xl font-bold">
+                  Welcome to IntuceoChatBox!
+                </h2>
+                <p className="text-base-content/60">
+                  Lets Get Start a Your Chats
+                </p>
+              </NoChatMessages>
+            ) : (
+              <ChatContainer />
+            )}
           </div>
         </div>
       </div>

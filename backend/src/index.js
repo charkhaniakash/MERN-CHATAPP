@@ -14,13 +14,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT; 
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
-// if i wnat different port i need to change in vite.config file also  but 5173 is a default one
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// if i want different port i need to change in vite.config file also  but 5173 is a default one
 app.use(cors({
   origin:"http://localhost:5173",
-  credentials:true
+  credentials:true,
 }))
 
 app.use("/api/auth", authRoutes);
