@@ -8,9 +8,11 @@ const ChatInput = () => {
   const [userText, setUserText] = useState("");
   const [imageLoad, setImageLoad] = useState(false);
 
-  const { sendMessages, messages } = useChatStore();
+  const { sendMessages } = useChatStore();
 
   const fileInputRef = useRef(null);
+
+
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -21,17 +23,17 @@ const ChatInput = () => {
         text: userText.trim(),
         image: imagePreview,
       });
-    } catch (error) {
-      toast.error("Failed to send messages");
-    }
 
-    // here i will clear the input
-    setUserText("");
-    setImagePreview("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      // Clear form
+      setUserText("");
+      setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Failed to send message:", error);
     }
   };
+
+
   const removeImage = () => {
     setImagePreview(null);
   };

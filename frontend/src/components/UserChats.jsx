@@ -1,6 +1,7 @@
 import React from 'react'
 import { useChatStore } from '../store/useChatStore'
 import { useAuthStore } from "../store/useAuthStore";
+import { formatMessageTime } from '../lib/utils';
 
 
 const UserChats = () => {
@@ -27,7 +28,7 @@ const UserChats = () => {
         </div>
         <div className="chat-header mb-1">
           <time className="text-xs opacity-50 ml-1">
-            {message.createdAt}
+            {formatMessageTime(message.createdAt)}
           </time>
         </div>
         <div className="chat-bubble flex flex-col">
