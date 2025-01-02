@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 import ChatContainer from "../components/ChatContainer";
 
 const HomePage = () => {
-  const { selectedUser, users ,getUsers} = useChatStore();
+  const { selectedUser, users ,getUsers,} = useChatStore();
 
 
   return (

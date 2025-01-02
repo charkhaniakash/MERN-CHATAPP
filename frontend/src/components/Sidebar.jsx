@@ -9,8 +9,6 @@ const Sidebar = () => {
   const {onlineUsers} = useAuthStore()
 
 
-  console.log(":::" , selectedUser)
-
     useEffect(()=>{
       getUsers()
     },[getUsers])

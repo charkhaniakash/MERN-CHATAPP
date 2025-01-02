@@ -1,60 +1,61 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Image, Send, X } from "lucide-react";
+import { Image, Loader2, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ChatInput = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [userText, setUserText] = useState("");
+  const [imageLoad, setImageLoad] = useState(false);
 
-  const {sendMessages,messages} = useChatStore()
+  const { sendMessages, messages } = useChatStore();
 
-  const fileInputRef = useRef();
-  console.log("fileInputRef", fileInputRef);
+  const fileInputRef = useRef(null);
 
-  const handleSendMessage = async(e) => {
-    e.preventDefault()
-    if(!userText.trim() && !imagePreview)return;
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!userText.trim() && !imagePreview) return;
 
     try {
-      console.log("{{--")
-        await sendMessages({
-            text:userText.trim(),
-            image:imagePreview
-        })
+      await sendMessages({
+        text: userText.trim(),
+        image: imagePreview,
+      });
     } catch (error) {
-        toast.error("Failed to send messages")
+      toast.error("Failed to send messages");
     }
 
-    // here i will clear the input 
-    setUserText("")
-    setImagePreview("")
-    if(fileInputRef.current){
-        fileInputRef.current.value = "";
+    // here i will clear the input
+    setUserText("");
+    setImagePreview("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
-
   };
   const removeImage = () => {
-    setImagePreview(null)
-
+    setImagePreview(null);
   };
 
-  const handleImageChange = () => {
+
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
+    setImageLoad(true);
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
+      setImageLoad(false);
     };
     reader.readAsDataURL(file);
   };
 
   return (
     <div className="p-4 w-full">
+      {imageLoad && <Loader2 className="h-5 w-5 animate-spin" />}
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">

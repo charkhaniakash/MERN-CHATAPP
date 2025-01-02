@@ -3,10 +3,11 @@ import { useChatStore } from "../store/useChatStore";
 import MessagesSkeleton from "./skeletons/MessagesSkeleton";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
+import UserChats from "./UserChats";
 
 const ChatContainer = () => {
-  const { isMessagesLoading, getMessages, messages, selectedUser } =
-    useChatStore();
+  const { isMessagesLoading, getMessages, messages, selectedUser } = useChatStore();
+  console.log("***" , messages)
 
   useEffect(() => {
     getMessages(selectedUser._id);
@@ -24,11 +25,8 @@ const ChatContainer = () => {
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
-      {/* chat header */}
       <ChatHeader />
-
-      <p>Content</p>
-      {/* chat info */}
+      <UserChats/>
       <ChatInput />
     </div>
   );
