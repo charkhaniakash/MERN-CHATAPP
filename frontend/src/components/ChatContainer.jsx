@@ -6,12 +6,17 @@ import ChatInput from "./ChatInput";
 import UserChats from "./UserChats";
 
 const ChatContainer = () => {
-  const { isMessagesLoading, getMessages, messages, selectedUser } = useChatStore();
+  const { isMessagesLoading, getMessages, messages, selectedUser, listenUsersMessages, unListenUsersMessages} = useChatStore();
+
   console.log("***" , messages)
 
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+    listenUsersMessages()
+
+    return ()=>unListenUsersMessages();
+
+  }, [selectedUser._id, getMessages,listenUsersMessages,unListenUsersMessages]);
 
   if (isMessagesLoading) {
     return (
