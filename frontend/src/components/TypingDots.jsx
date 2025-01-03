@@ -1,11 +1,19 @@
-import React from "react";
+import React from 'react';
 
 const TypingDots = () => {
   return (
-    <div class="flex space-x-2 justify-center items-center bg-white h-screen dark:inver bg-opacity-0 bg-gradient-to-r from-violet-200 to-pink-200">
-      <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-      <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-      <div class="h-8 w-8 bg-black rounded-full animate-bounce"></div>
+    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100">
+      <div className="flex gap-1">
+        <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce" 
+             style={{animationDelay: '0ms'}} />
+        <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce" 
+             style={{animationDelay: '150ms'}} />
+        <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce" 
+             style={{animationDelay: '300ms'}} />
+      </div>
+      <span className="text-sm text-gray-600 font-medium">
+        typing
+      </span>
     </div>
   );
 };

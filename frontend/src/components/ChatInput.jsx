@@ -3,6 +3,7 @@ import { useChatStore } from "../store/useChatStore";
 import { Image, Loader2, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/useAuthStore";
+import TypingDots from "./TypingDots";
 
 const ChatInput = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -12,9 +13,7 @@ const ChatInput = () => {
   const { sendMessages } = useChatStore();
 
   const fileInputRef = useRef(null);
-   const socket = useAuthStore .getState().socket;
-
-
+  const socket = useAuthStore.getState().socket;
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -29,29 +28,27 @@ const ChatInput = () => {
       // Clear form
       setUserText("");
       setImagePreview(null);
+      socket.emit("stop-typing", "not typing");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   };
-  
 
-  const handleChangeText =(e)=>{
+  const handleChangeText = (e) => {
     const currentMsg = e.target.value;
-    setUserText(currentMsg)
-    
-    if(currentMsg === ""){
-      socket.emit("stop-typing" , "not typing")
-    }else{
-      socket.emit("typing" , "..typing")
-    }
-  }
+    setUserText(currentMsg);
 
+    if (currentMsg === "") {
+      socket.emit("stop-typing", "not typing");
+    } else {
+      socket.emit("typing", "..typing");
+    }
+  };
 
   const removeImage = () => {
     setImagePreview(null);
   };
-
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -70,27 +67,23 @@ const ChatInput = () => {
   };
 
   useEffect(() => {
-    socket.on("user-typing", (data) => {
-      console.log("Typing event received:", data);
-      setTypingStatus(data);
+    socket.on("user-typing", (typeHead) => {
+      setTypingStatus(typeHead);
     });
-  
+
     socket.on("user-stop-typing", () => {
-      console.log("Stop typing event received");
       setTypingStatus("");
     });
-  
+
     return () => {
       socket.off("user-typing");
       socket.off("user-stop-typing");
     };
   }, [socket]);
-  
-
 
   return (
     <div className="p-4 w-full">
-      {imageLoad && <Loader2 className="h-5 w-5 animate-spin" />}
+      {imageLoad && <Loader2 className="mb-2 ml-2 h-7 w-7 animate-spin" />}
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -111,9 +104,7 @@ const ChatInput = () => {
         </div>
       )}
 
-{typingStatus && (
-          <p className="text-sm text-zinc-500">...typing</p>
-        )}
+      {typingStatus && <TypingDots />}
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2">
           <input
