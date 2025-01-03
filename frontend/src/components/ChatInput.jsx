@@ -1,16 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { Image, Loader2, Send, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuthStore } from "../store/useAuthStore";
 
 const ChatInput = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [userText, setUserText] = useState("");
   const [imageLoad, setImageLoad] = useState(false);
-
+  const [typingStatus, setTypingStatus] = useState("");
   const { sendMessages } = useChatStore();
 
   const fileInputRef = useRef(null);
+   const socket = useAuthStore .getState().socket;
 
 
 
@@ -32,6 +34,18 @@ const ChatInput = () => {
       console.error("Failed to send message:", error);
     }
   };
+  
+
+  const handleChangeText =(e)=>{
+    const currentMsg = e.target.value;
+    setUserText(currentMsg)
+    
+    if(currentMsg === ""){
+      socket.emit("stop-typing" , "not typing")
+    }else{
+      socket.emit("typing" , "..typing")
+    }
+  }
 
 
   const removeImage = () => {
@@ -54,6 +68,25 @@ const ChatInput = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  useEffect(() => {
+    socket.on("user-typing", (data) => {
+      console.log("Typing event received:", data);
+      setTypingStatus(data);
+    });
+  
+    socket.on("user-stop-typing", () => {
+      console.log("Stop typing event received");
+      setTypingStatus("");
+    });
+  
+    return () => {
+      socket.off("user-typing");
+      socket.off("user-stop-typing");
+    };
+  }, [socket]);
+  
+
 
   return (
     <div className="p-4 w-full">
@@ -78,6 +111,9 @@ const ChatInput = () => {
         </div>
       )}
 
+{typingStatus && (
+          <p className="text-sm text-zinc-500">...typing</p>
+        )}
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2">
           <input
@@ -85,7 +121,7 @@ const ChatInput = () => {
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
             placeholder="Type a message..."
             value={userText}
-            onChange={(e) => setUserText(e.target.value)}
+            onChange={handleChangeText}
           />
           <input
             type="file"

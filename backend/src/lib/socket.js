@@ -27,11 +27,21 @@ io.on("connection" ,(socket)=>{
         connectingUsersMap[userId] = socket.id
     }
 
-    console.log("connectingUsersMap" , connectingUsersMap)
-
     // here emit() will send events to all the online users
 
-    io.emit("showOnlineUsers", Object.keys(connectingUsersMap) )
+    io.emit("showOnlineUsers", Object.keys(connectingUsersMap))
+
+
+    socket.on("typing" , (userMsg)=>{
+      console.log("user is typing")
+      socket.broadcast.emit("user-typing" , userMsg)
+    })
+    
+    socket.on("stop-typing" , (userData)=>{
+      console.log("user is stoped")
+      socket.broadcast.emit("user-stop-typing" , userData)
+    })
+
 
 
     socket.on("disconnect" ,()=>{
