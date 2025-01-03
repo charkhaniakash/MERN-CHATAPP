@@ -14,11 +14,25 @@ const io = new Server(server, {
 });
 
 
+const connectingUsersMap = {}
 io.on("connection" ,(socket)=>{
     console.log("user connected", socket.id);
 
+    const userId = socket.handshake.query.userId;
+    if(userId){
+        connectingUsersMap[userId] = socket.id
+    }
+
+    console.log("connectingUsersMap" , connectingUsersMap)
+
+    // here emit() will send events to all the online users
+
+    io.emit("showOnlineUsers", Object.keys(connectingUsersMap) )
+
+
     socket.on("disconnect" ,()=>{
-        console.log("user disconnected",socket.id);
+        delete connectingUsersMap[userId]
+        io.emit("showOnlineUsers", Object.keys(connectingUsersMap) )
     });
 })
 

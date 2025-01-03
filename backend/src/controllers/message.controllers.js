@@ -1,4 +1,5 @@
 import cloudinary from "../lib/cloudinary.js";
+import { io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 
@@ -41,25 +42,27 @@ export const sendMessages = async (req, res) => {
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
+    
     if (!text && !image) {
       return res
-        .status(400)
-        .json({ message: "Text or image must be provided" });
+      .status(400)
+      .json({ message: "Text or image must be provided" });
     }
-
+    
     let imageUrl;
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
-
+    
     const newMessage = new Message({
       senderId,
       receiverId,
       text,
       image: imageUrl,
     });
-
+    // io.to(receiverId).emit("emitt")
+    
     await newMessage.save();
     res.status(200).json(newMessage);
   } catch (error) {
