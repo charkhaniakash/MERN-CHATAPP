@@ -5,19 +5,20 @@ import SidebarSkeletonLoder from "./skeletons/SidebarSkeletonLoder";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Sidebar = () => {
-  const { users, isUsersLoading,getUsers ,setSelectedUser , selectedUser} = useChatStore();
-  const {connectedUsers} = useAuthStore()
+  const { users, isUsersLoading, getUsers, setSelectedUser, selectedUser } =
+    useChatStore();
+  const { connectedUsers } = useAuthStore();
 
-  const [showOnlineUsersOnly , setShowOnlineUsersOnly] = useState(false)
+  const [showOnlineUsersOnly, setShowOnlineUsersOnly] = useState(false);
 
-  const showOnline = showOnlineUsersOnly ?  users.filter((user)=>connectedUsers.includes(user._id)) : users;
-  console.log("showOnline" , connectedUsers)
+  const showOnline = showOnlineUsersOnly
+    ? users.filter((user) => connectedUsers.includes(user._id))
+    : users;
+  console.log("showOnline", connectedUsers);
 
-
-
-    useEffect(()=>{
-      getUsers()
-    },[getUsers])
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
 
   if (isUsersLoading) {
     return <SidebarSkeletonLoder />;
@@ -25,7 +26,7 @@ const Sidebar = () => {
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
-           <div className="border-b border-base-300 w-full p-5">
+      <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
           <span className="font-medium hidden lg:block">Contacts</span>
@@ -36,16 +37,17 @@ const Sidebar = () => {
             <input
               type="checkbox"
               checked={showOnlineUsersOnly}
-              onChange={(e)=>setShowOnlineUsersOnly(e.target.checked)}
+              onChange={(e) => setShowOnlineUsersOnly(e.target.checked)}
               className="checkbox checkbox-sm"
             />
             <span className="text-sm">Show online only</span>
           </label>
-          <span className="text-xs text-zinc-500">({connectedUsers.length-1} online)</span>
+          <span className="text-xs text-zinc-500">
+            ({connectedUsers.length - 1} online)
+          </span>
         </div>
       </div>
 
-      
       <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
@@ -62,7 +64,11 @@ const Sidebar = () => {
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
-              ${selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""}
+              ${
+                selectedUser?._id === user._id
+                  ? "bg-base-300 ring-1 ring-base-300"
+                  : ""
+              }
             `}
           >
             <div className="relative mx-auto lg:mx-0">
@@ -89,9 +95,9 @@ const Sidebar = () => {
           </button>
         ))}
 
-        {/* {filteredUsers.length === 0 && (
+        {showOnline.length === 0 && (
           <div className="text-center text-zinc-500 py-4">No online users</div>
-        )} */}
+        )}
       </div>
     </aside>
   );
