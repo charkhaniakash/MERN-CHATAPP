@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Users } from "lucide-react";
+import { Check, Users, X } from "lucide-react";
 import SidebarSkeletonLoder from "./skeletons/SidebarSkeletonLoder";
 import { useAuthStore } from "../store/useAuthStore";
 
@@ -77,20 +77,28 @@ const Sidebar = () => {
                 alt={user.name}
                 className="size-12 object-cover rounded-full"
               />
-              {connectedUsers.includes(user._id) && (
-                <span
-                  className="absolute bottom-0 right-0 size-3 bg-green-500 
-                  rounded-full ring-2 ring-zinc-900"
-                />
-              )}
+                    {connectedUsers.includes(user._id) ? (
+                  <span
+                    className="absolute bottom-0 right-0 size-3 bg-green-500 
+    rounded-full ring-2 ring-zinc-900 flex items-center justify-center"
+                  >
+                    <Check size={8} color="white" strokeWidth={3} />
+                  </span>
+                ) : (
+                  <span
+                    className="absolute bottom-0 right-0 size-3 bg-gray-600 rounded-full ring-2 ring-zinc-900 flex items-center justify-center"
+                  >
+                    <X size={8} color="white" strokeWidth={3} />
+                  </span>
+                )}
             </div>
 
             {/* User info visible only on larger screens */}
             <div className="hidden lg:block text-left min-w-0">
               <div className="font-medium truncate">{user.fullName}</div>
-              <div className="text-sm text-zinc-400">
+              {/* <div className="text-sm text-zinc-400">
                 {connectedUsers.includes(user._id) ? "Online" : "Offline"}
-              </div>
+              </div> */}
             </div>
           </button>
         ))}
