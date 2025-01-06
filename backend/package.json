@@ -20,6 +20,7 @@
     "express": "^4.21.2",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "mern-chatapp": "file:..",
     "mongoose": "^8.9.2",
     "socket.io": "^4.8.1"
   }
