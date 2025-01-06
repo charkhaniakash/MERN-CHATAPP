@@ -11,6 +11,7 @@ import { Loader } from "lucide-react";
 import ProfilePage from "./pages/ProfilePage";
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore";
+import WorkInProgress from "./components/WorkInProgress";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth , connectedUsers } = useAuthStore();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
         <Route path="/login" element={!authUser ? <LoginPage /> :<Navigate to="/" />} />
         <Route path="/settings" element={<SettingPage />} />
+        <Route path="/stillWorking" element={<WorkInProgress />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login"/>} />
       </Routes>
     </div>

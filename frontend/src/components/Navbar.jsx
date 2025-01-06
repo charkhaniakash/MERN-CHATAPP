@@ -26,8 +26,8 @@ const Navbar = () => {
             <Link
               className={`
               btn btn-sm gap-2 transition-colors
-              
               `}
+              to="/stillWorking"
             >
               <Bug className="w-4 h-4" />
               <span className="hidden sm:inline">Report Bug</span>

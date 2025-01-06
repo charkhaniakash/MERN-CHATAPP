@@ -28,6 +28,8 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+      <div className="ml-2 text-xl">Made with ♥️ by Akash </div>
     </div>
   );
 };

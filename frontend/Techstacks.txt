@@ -7,3 +7,8 @@ Zustand
 -------
 
 React State Management — using Zustand like Redux
+
+
+Deployment:-
+
+Render.com
