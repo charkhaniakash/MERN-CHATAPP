@@ -94,7 +94,11 @@ const Sidebar = () => {
                 {connectedUsers.includes(user._id) ? "Online" : "Offline"}
               </div> */}
               <div className="text-sm text-zinc-400 truncate">
-                {user?.latestMessage?.text || "No messages yet"}
+                {user?.latestMessage?.text
+                  ? user.latestMessage.text.length > 10
+                    ? `${user.latestMessage.text.slice(0, 10)}...`
+                    : user.latestMessage.text
+                  : "No messages yet"}
               </div>
             </div>
           </button>
