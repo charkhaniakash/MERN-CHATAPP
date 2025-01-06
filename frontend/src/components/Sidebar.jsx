@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { Check, Users, X } from "lucide-react";
 import SidebarSkeletonLoder from "./skeletons/SidebarSkeletonLoder";
 import { useAuthStore } from "../store/useAuthStore";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const { users, isUsersLoading, getUsers, setSelectedUser, selectedUser } =
@@ -14,7 +14,6 @@ const Sidebar = () => {
   const showOnline = showOnlineUsersOnly
     ? users.filter((user) => connectedUsers.includes(user._id))
     : users;
-  console.log("showOnline", connectedUsers);
 
   useEffect(() => {
     getUsers();
@@ -31,7 +30,6 @@ const Sidebar = () => {
           <Users className="size-6" />
           <span className="font-medium hidden lg:block">Contacts</span>
         </div>
-        {/* TODO: Online filter toggle */}
         <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
@@ -53,8 +51,6 @@ const Sidebar = () => {
           <Users className="size-6" />
           <span className="font-medium hidden lg:block">Contacts</span>
         </div>
-
-        {/* TODO something must be done later */}
       </div>
       <div className="overflow-y-auto w-full py-3">
         {showOnline.map((user) => (
@@ -77,20 +73,18 @@ const Sidebar = () => {
                 alt={user.name}
                 className="size-12 object-cover rounded-full"
               />
-                    {connectedUsers.includes(user._id) ? (
-                  <span
-                    className="absolute bottom-0 right-0 size-3 bg-green-500 
+              {connectedUsers.includes(user._id) ? (
+                <span
+                  className="absolute bottom-0 right-0 size-3 bg-green-500 
     rounded-full ring-2 ring-zinc-900 flex items-center justify-center"
-                  >
-                    <Check size={8} color="white" strokeWidth={3} />
-                  </span>
-                ) : (
-                  <span
-                    className="absolute bottom-0 right-0 size-3 bg-gray-600 rounded-full ring-2 ring-zinc-900 flex items-center justify-center"
-                  >
-                    <X size={8} color="white" strokeWidth={3} />
-                  </span>
-                )}
+                >
+                  <Check size={8} color="white" strokeWidth={3} />
+                </span>
+              ) : (
+                <span className="absolute bottom-0 right-0 size-3 bg-gray-600 rounded-full ring-2 ring-zinc-900 flex items-center justify-center">
+                  <X size={8} color="white" strokeWidth={3} />
+                </span>
+              )}
             </div>
 
             {/* User info visible only on larger screens */}
@@ -99,6 +93,9 @@ const Sidebar = () => {
               {/* <div className="text-sm text-zinc-400">
                 {connectedUsers.includes(user._id) ? "Online" : "Offline"}
               </div> */}
+              <div className="text-sm text-zinc-400 truncate">
+                {user?.latestMessage?.text || "No messages yet"}
+              </div>
             </div>
           </button>
         ))}

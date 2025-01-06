@@ -1,3 +1,5 @@
+
+
 import cloudinary from "../lib/cloudinary.js";
 import { getRecieverId, io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
@@ -6,16 +8,45 @@ import User from "../models/user.model.js";
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
+
+    // Fetch all users except the logged-in user
     const filteredUsers = await User.find({
       _id: { $ne: loggedInUserId },
     }).select("-password");
 
-    res.status(200).json({ users: filteredUsers });
+    // Fetch the latest message for each user
+    const usersWithMessages = await Promise.all(
+      filteredUsers.map(async (user) => {
+        const latestMessage = await Message.findOne({
+          $or: [
+            { senderId: loggedInUserId, receiverId: user._id },
+            { senderId: user._id, receiverId: loggedInUserId },
+          ],
+        })
+          .sort({ createdAt: -1 }) // Get the most recent message
+          .lean();
+
+        return {
+          ...user.toObject(),
+          latestMessage,
+        };
+      })
+    );
+
+    // Sort users based on the latest message timestamp
+    const sortedUsers = usersWithMessages.sort((a, b) => {
+      const timeA = a.latestMessage?.createdAt || 0;
+      const timeB = b.latestMessage?.createdAt || 0;
+      return new Date(timeB) - new Date(timeA);
+    });
+
+    res.status(200).json({ users: sortedUsers });
   } catch (error) {
     console.log("Error in getUsersForSidebar controller: ", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const getMessages = async (req, res) => {
   try {

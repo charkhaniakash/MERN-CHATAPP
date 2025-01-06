@@ -51,15 +51,26 @@ export const useChatStore = create((set, get) => ({
   },
 
   listenUsersMessages: () => {
-    const { selectedUser } = get();
-    if(!selectedUser) return;
+    const { selectedUser, users } = get();
+    if (!selectedUser) return;
     const socket = useAuthStore.getState().socket;
-    console.log("***" , socket)
+  
     socket.on("userChatData", (newMessageData) => {
-      if(newMessageData.senderId !== selectedUser._id)return;
-      set({ messages: [...get().messages, newMessageData] });
+      // Update messages if the message belongs to the selected user
+      if (newMessageData.senderId === selectedUser._id) {
+        set({ messages: [...get().messages, newMessageData] });
+      }
+  
+      // Reorder users, moving the sender to the top
+      const updatedUsers = users.filter((user) => user._id !== newMessageData.senderId);
+      const sender = users.find((user) => user._id === newMessageData.senderId);
+  
+      if (sender) {
+        set({ users: [sender, ...updatedUsers] });
+      }
     });
   },
+  
 
   unListenUsersMessages :()=>{
     const socket = useAuthStore.getState().socket;
