@@ -38,38 +38,45 @@ export const useChatStore = create((set, get) => ({
   },
 
   sendMessages: async (messageData) => {
-    const { selectedUser, messages } = get();
+    const { selectedUser, users, messages } = get();
     try {
       const res = await axiosInstance.post(
         `/messages/send/${selectedUser._id}`,
         messageData
       );
       set({ messages: [...messages, res.data] });
+      const updatedUsers = users.filter((user) => user._id !== selectedUser._id);
+      set({
+        users: [selectedUser, ...updatedUsers],
+      });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to send message");
     }
   },
+  
 
   listenUsersMessages: () => {
-    const { selectedUser, users } = get();
-    if (!selectedUser) return;
     const socket = useAuthStore.getState().socket;
   
     socket.on("userChatData", (newMessageData) => {
-      // Update messages if the message belongs to the selected user
-      if (newMessageData.senderId === selectedUser._id) {
+      const { selectedUser, users } = get();
+      if (newMessageData.senderId === selectedUser?._id) {
         set({ messages: [...get().messages, newMessageData] });
       }
   
-      // Reorder users, moving the sender to the top
       const updatedUsers = users.filter((user) => user._id !== newMessageData.senderId);
       const sender = users.find((user) => user._id === newMessageData.senderId);
   
       if (sender) {
-        set({ users: [sender, ...updatedUsers] });
+        sender.unreadCount = (sender.unreadCount || 0) + 1;
+  
+        set({
+          users: [sender, ...updatedUsers],
+        });
       }
     });
   },
+  
   
 
   unListenUsersMessages :()=>{
