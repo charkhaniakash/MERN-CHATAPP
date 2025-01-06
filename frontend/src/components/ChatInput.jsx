@@ -10,7 +10,7 @@ const ChatInput = () => {
   const [userText, setUserText] = useState("");
   const [imageLoad, setImageLoad] = useState(false);
   const [typingStatus, setTypingStatus] = useState("");
-  const { sendMessages } = useChatStore();
+  const { sendMessages, selectedUser } = useChatStore();
 
   const fileInputRef = useRef(null);
   const socket = useAuthStore.getState().socket;
@@ -25,10 +25,9 @@ const ChatInput = () => {
         image: imagePreview,
       });
 
-      // Clear form
       setUserText("");
       setImagePreview(null);
-      socket.emit("stop-typing", "not typing");
+      socket.emit("stop-typing", { recipientId: selectedUser._id });
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
@@ -40,14 +39,13 @@ const ChatInput = () => {
     setUserText(currentMsg);
 
     if (currentMsg === "") {
-      socket.emit("stop-typing", "not typing");
+      socket.emit("stop-typing", { recipientId: selectedUser._id });
     } else {
-      socket.emit("typing", "..typing");
+      socket.emit("typing", { 
+        recipientId: selectedUser._id,
+        status: "typing"
+      });
     }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
   };
 
   const handleImageChange = (e) => {
@@ -67,19 +65,25 @@ const ChatInput = () => {
   };
 
   useEffect(() => {
-    socket.on("user-typing", (typeHead) => {
-      setTypingStatus(typeHead);
+    socket.on("user-typing", (data) => {
+      if (data.senderId === selectedUser._id) {
+        setTypingStatus(data.status);
+      }
     });
 
-    socket.on("user-stop-typing", () => {
-      setTypingStatus("");
+    socket.on("user-stop-typing", (data) => {
+      if (data.senderId === selectedUser._id) {
+        setTypingStatus("");
+      }
     });
 
     return () => {
       socket.off("user-typing");
       socket.off("user-stop-typing");
     };
-  }, [socket]);
+  }, [socket, selectedUser._id]);
+
+
 
   return (
     <div className="p-4 w-full">

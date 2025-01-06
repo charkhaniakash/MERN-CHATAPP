@@ -19,36 +19,37 @@ export const getRecieverId =(userId)=>{
 
 
 const connectingUsersMap = {}
-io.on("connection" ,(socket)=>{
-    console.log("user connected", socket.id);
+io.on("connection", (socket) => {
+  const userId = socket.handshake.query.userId;
+  if(userId) {
+      connectingUsersMap[userId] = socket.id;
+  }
 
-    const userId = socket.handshake.query.userId;
-    if(userId){
-        connectingUsersMap[userId] = socket.id
-    }
+  io.emit("showOnlineUsers", Object.keys(connectingUsersMap));
 
-    // here emit() will send events to all the online users
+  socket.on("typing", (data) => {
+      const recipientSocketId = connectingUsersMap[data.recipientId];
+      if (recipientSocketId) {
+          io.to(recipientSocketId).emit("user-typing", {
+              senderId: userId,
+              status: data.status
+          });
+      }
+  });
+  
+  socket.on("stop-typing", (data) => {
+      const recipientSocketId = connectingUsersMap[data.recipientId];
+      if (recipientSocketId) {
+          io.to(recipientSocketId).emit("user-stop-typing", {
+              senderId: userId
+          });
+      }
+  });
 
-    io.emit("showOnlineUsers", Object.keys(connectingUsersMap))
-
-
-    socket.on("typing" , (userMsg)=>{
-      console.log("user is typing")
-      socket.broadcast.emit("user-typing" , userMsg)
-    })
-    
-    socket.on("stop-typing" , (userData)=>{
-      console.log("user is stoped")
-      socket.broadcast.emit("user-stop-typing" , userData)
-    })
-
-
-
-    socket.on("disconnect" ,()=>{
-        delete connectingUsersMap[userId]
-        io.emit("showOnlineUsers", Object.keys(connectingUsersMap) )
-    });
-})
-
+  socket.on("disconnect", () => {
+      delete connectingUsersMap[userId];
+      io.emit("showOnlineUsers", Object.keys(connectingUsersMap));
+  });
+});
 
 export {io,server,app}
