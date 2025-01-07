@@ -16,7 +16,7 @@ const HomePage = () => {
             {!selectedUser ? (
               <NoChatMessages>
                 <h2 className="text-2xl font-bold">
-                  Welcome to IntuceoChatBox!
+                  Welcome to IntuChatBox!
                 </h2>
                 <p className="text-base-content/60">
                   Lets Get Start a Your Chats
