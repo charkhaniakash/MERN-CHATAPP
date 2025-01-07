@@ -8,8 +8,6 @@ import UserChats from "./UserChats";
 const ChatContainer = () => {
   const { isMessagesLoading, getMessages, messages, selectedUser, listenUsersMessages, unListenUsersMessages} = useChatStore();
 
-  console.log("***" , messages)
-
   useEffect(() => {
     getMessages(selectedUser._id);
     listenUsersMessages()
