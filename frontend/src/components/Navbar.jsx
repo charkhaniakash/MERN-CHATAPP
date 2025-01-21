@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { Bug, LogOut, MessageCircleCode, Settings, User } from "lucide-react";
+import { Bug, Github, LogOut, MessageCircleCode, Pencil, Settings, User } from "lucide-react";
 
 const Navbar = () => {
   const { authUser, logout } = useAuthStore();
@@ -22,6 +22,15 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-4">
+          <Link
+              className={`
+              btn btn-sm gap-2 transition-colors
+              `}
+              to="https://github.com/charkhaniakash/MERN-CHATAPP"
+            >
+            <Pencil />
+               <span className="hidden sm:inline">Edit Page </span>
+            </Link>
             <Link
               className={`
               btn btn-sm gap-2 transition-colors

@@ -29,7 +29,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="ml-2 text-xl">Made with ♥️ by Akash </div>
+      <div className="ml-2 mt-2">Made with ♥️ by Akash </div>
     </div>
   );
 };

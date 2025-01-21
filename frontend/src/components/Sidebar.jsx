@@ -95,8 +95,8 @@ const Sidebar = () => {
               </div> */}
               <div className="text-sm text-zinc-400 truncate">
                 {user?.latestMessage?.text
-                  ? user.latestMessage.text.length > 10
-                    ? `${user.latestMessage.text.slice(0, 10)}...`
+                  ? user.latestMessage.text.length > 20
+                    ? `${user.latestMessage.text.slice(0, 20)}...`
                     : user.latestMessage.text
                   : "No messages yet"}
               </div>
