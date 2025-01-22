@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageCircleCode, Github, Twitter } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const { login, isLoggingIn } = useAuthStore();
@@ -13,6 +14,9 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      return toast.error("Please fill all the fields");
+    }
     login(formData);
   };
 
