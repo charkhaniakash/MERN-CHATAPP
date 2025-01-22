@@ -1,8 +1,9 @@
 import { useChatStore } from "../store/useChatStore";
-import { Check, Users, X } from "lucide-react";
+import { Check, Plus, Users, X } from "lucide-react";
 import SidebarSkeletonLoder from "./skeletons/SidebarSkeletonLoder";
 import { useAuthStore } from "../store/useAuthStore";
 import { useEffect, useState } from "react";
+import RoomChat from "./RoomChat";
 
 const Sidebar = () => {
   const { users, isUsersLoading, getUsers, setSelectedUser, selectedUser } =
@@ -10,6 +11,9 @@ const Sidebar = () => {
   const { connectedUsers } = useAuthStore();
 
   const [showOnlineUsersOnly, setShowOnlineUsersOnly] = useState(false);
+
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const showOnline = showOnlineUsersOnly
     ? users.filter((user) => connectedUsers.includes(user._id))
@@ -25,6 +29,35 @@ const Sidebar = () => {
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+      <button
+      onClick={() => setShowCreateRoom(true)}
+      className="inline-flex items-center px-3 py-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    >
+      <Plus size={16} />
+      <span>Create Room</span>
+    </button>
+      {showCreateRoom && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Create or Join Room</h3>
+            <RoomChat
+              onClose={() => setShowCreateRoom(false)}
+              onRoomSelect={(room) => {
+                setSelectedRoom(room);
+                setShowCreateRoom(false);
+              }}
+            />
+            <div className="modal-action">
+              <button
+                className="btn btn-ghost"
+                onClick={() => setShowCreateRoom(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
@@ -60,10 +93,9 @@ const Sidebar = () => {
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
-              ${
-                selectedUser?._id === user._id
-                  ? "bg-base-300 ring-1 ring-base-300"
-                  : ""
+              ${selectedUser?._id === user._id
+                ? "bg-base-300 ring-1 ring-base-300"
+                : ""
               }
             `}
           >

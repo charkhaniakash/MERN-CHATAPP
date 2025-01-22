@@ -10,6 +10,7 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  selectedRoom: null,
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -53,38 +54,42 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response?.data?.message || "Failed to send message");
     }
   },
-  
+
 
   listenUsersMessages: () => {
     const socket = useAuthStore.getState().socket;
-  
+
     socket.on("userChatData", (newMessageData) => {
       const { selectedUser, users } = get();
       if (newMessageData.senderId === selectedUser?._id) {
         set({ messages: [...get().messages, newMessageData] });
       }
-  
+
       const updatedUsers = users.filter((user) => user._id !== newMessageData.senderId);
       const sender = users.find((user) => user._id === newMessageData.senderId);
-  
+
       if (sender) {
         sender.unreadCount = (sender.unreadCount || 0) + 1;
-  
+
         set({
           users: [sender, ...updatedUsers],
         });
       }
     });
   },
-  
-  
 
-  unListenUsersMessages :()=>{
+
+
+  unListenUsersMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("userChatData")
   },
 
   setSelectedUser: async (selectedUser) => {
     set({ selectedUser });
+  },
+
+  setSelectedRoom: async(room) => {
+    set({ selectedRoom: room, selectedUser: null })
   },
 }));

@@ -4,25 +4,28 @@ import NoChatMessages from "../components/NoChatMessages";
 import Sidebar from "../components/Sidebar";
 import ChatContainer from "../components/ChatContainer";
 import { ContactRound, Linkedin, Mail } from "lucide-react";
+import RoomChatContainer from "../components/RoomChatContainer";
 
 const HomePage = () => {
-  const { selectedUser, users, getUsers } = useChatStore();
+  const { selectedUser, selectedRoom  } = useChatStore();
 
   return (
     <div className="h-screen bg-base-200">
-      <div className="flex items-center justify-center pt-20 px-4">
+ <div className="flex items-center justify-center pt-20 px-4">
         <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-7xl h-[calc(100vh-8rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
             <Sidebar />
-            {!selectedUser ? (
+            {!selectedUser && !selectedRoom ? (
               <NoChatMessages>
                 <h2 className="text-2xl font-bold">
                   Welcome to NammaChatApp!
                 </h2>
                 <p className="text-base-content/60">
-                  Lets Get Start a Your Chats
+                  Start a chat or join a room
                 </p>
               </NoChatMessages>
+            ) : selectedRoom ? (
+              <RoomChatContainer room={selectedRoom} />
             ) : (
               <ChatContainer />
             )}

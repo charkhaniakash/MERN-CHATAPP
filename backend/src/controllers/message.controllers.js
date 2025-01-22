@@ -1,5 +1,3 @@
-
-
 import cloudinary from "../lib/cloudinary.js";
 import { getRecieverId, io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
@@ -47,7 +45,6 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 
-
 export const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
@@ -73,36 +70,70 @@ export const sendMessages = async (req, res) => {
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
-    
     if (!text && !image) {
       return res
-      .status(400)
-      .json({ message: "Text or image must be provided" });
+        .status(400)
+        .json({ message: "Text or image must be provided" });
     }
-    
+
     let imageUrl;
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
-    
+
     const newMessage = new Message({
       senderId,
       receiverId,
       text,
       image: imageUrl,
     });
-    
+
     await newMessage.save();
 
     const recieverSocketId = getRecieverId(receiverId)
-    if(recieverSocketId){
-      io.to(recieverSocketId).emit("userChatData" ,newMessage)
+    if (recieverSocketId) {
+      io.to(recieverSocketId).emit("userChatData", newMessage)
     }
 
     res.status(200).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessages controller:", error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getRoomMessages = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const messages = await Message.find({ roomId })
+      .populate("senderId", "username fullName")
+      .sort({ createdAt: 1 });
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.error("Error in getRoomMessages controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const sendRoomMessage = async (req, res) => {
+  try {
+    const { roomId, text } = req.body;
+    const senderId = req.user._id;
+
+    const newMessage = new Message({
+      senderId,
+      roomId,
+      text,
+    });
+
+    await newMessage.save();
+    const populatedMessage = await Message.findById(newMessage._id).populate("senderId", "username fullName");
+
+    res.status(201).json(populatedMessage);
+  } catch (error) {
+    console.error("Error in sendRoomMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
