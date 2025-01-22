@@ -48,6 +48,11 @@ const ChatInput = () => {
     }
   };
 
+  const removeImage = () => {
+    setImagePreview(null);
+  };
+
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {

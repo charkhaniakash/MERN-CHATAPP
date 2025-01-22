@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
-import { Bug, Github, LogOut, MessageCircleCode, Pencil, Settings, User } from "lucide-react";
+import { Bug, Github, LogOut, MessageCircleCode, Settings } from "lucide-react";
 
 const Navbar = () => {
   const { authUser, logout } = useAuthStore();
@@ -17,53 +17,46 @@ const Navbar = () => {
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
                 <MessageCircleCode className="w-5 h-5 text-primary" />
               </div>
-              <h1 className="text-lg font-bold">IntuChatBox</h1>
+              <h1 className="text-lg font-bold">NammaChatApp</h1>
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
-          <Link
-              className={`
-              btn btn-sm gap-2 transition-colors
-              `}
-              to="https://github.com/charkhaniakash/MERN-CHATAPP"
+            <a
+              href="https://github.com/charkhaniakash/MERN-CHATAPP"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-sm gap-2 transition-colors"
             >
-            <Pencil />
-               <span className="hidden sm:inline">Edit Page </span>
-            </Link>
+              <Github />
+              <span className="hidden sm:inline">Edit Page</span>
+            </a>
             <Link
-              className={`
-              btn btn-sm gap-2 transition-colors
-              `}
-              to="/stillWorking"
+              className="btn btn-sm gap-2 transition-colors"
+              to="/report-bug"
             >
               <Bug className="w-4 h-4" />
               <span className="hidden sm:inline">Report Bug</span>
             </Link>
             <Link
-              to={"/settings"}
-              className={`
-              btn btn-sm gap-2 transition-colors
-              
-              `}
+              to="/settings"
+              className="btn btn-sm gap-2 transition-colors"
             >
               <Settings className="w-4 h-4" />
-              {/* <span className="hidden sm:inline">Settings</span> */}
             </Link>
 
             {authUser && (
               <>
-                <Link to={"/profile"} className={`btn-sm gap-2`}>
+                <Link to="/profile" className="btn-sm gap-2">
                   <div className="avatar placeholder">
                     <div className="bg-neutral text-neutral-content w-9 rounded-full">
-                    <span>{authUser.email.slice(0, 2).toUpperCase()}</span>
+                      <span>{authUser.email.slice(0, 2).toUpperCase()}</span>
                     </div>
                   </div>
                 </Link>
 
                 <button className="flex gap-2 items-center" onClick={logout}>
                   <LogOut className="size-5" />
-                  {/* <span className="hidden sm:inline">Logout</span> */}
                 </button>
               </>
             )}
@@ -73,4 +66,5 @@ const Navbar = () => {
     </header>
   );
 };
+
 export default Navbar;

@@ -4,6 +4,7 @@
 import express from "express";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import bugRoutes from './routes/bug.route.js';
 import dotenv from "dotenv";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
@@ -30,6 +31,7 @@ app.use(cors({
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use('/api', bugRoutes);
 
 if(process.env.NODE_ENV  === 'production'){
   app.use(express.static(path.join(__dirname,"../frontend/dist")));
