@@ -27,6 +27,11 @@ const Sidebar = () => {
     return <SidebarSkeletonLoder />;
   }
 
+  const handelSelectUser=(user)=>{
+    console.log("????" , user)
+    setSelectedUser(user)
+  }
+
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       <button
@@ -89,7 +94,7 @@ const Sidebar = () => {
         {showOnline.map((user) => (
           <button
             key={user._id}
-            onClick={() => setSelectedUser(user)}
+            onClick={() => handelSelectUser(user)}
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors

@@ -86,10 +86,10 @@ export const useChatStore = create((set, get) => ({
   },
 
   setSelectedUser: async (selectedUser) => {
-    set({ selectedUser });
+    set({ selectedUser, selectedRoom: null });
   },
 
   setSelectedRoom: async(room) => {
-    set({ selectedRoom: room, selectedUser: null })
+    set({ selectedRoom: room, selectedUser: null });
   },
 }));

@@ -105,7 +105,7 @@ const ChatInput = ({ onSendMessage }) => {
   };
 
   return (
-    <form onSubmit={handleSendMessage} className="px-4 py-3 border-t">
+    <form onSubmit={handleSendMessage} className="px-4 py-3 ">
       {imageLoad && (
         <div className="flex items-center gap-2 mb-2">
           <Loader2 className="w-4 h-4 animate-spin" />
