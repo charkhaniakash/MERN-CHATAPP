@@ -46,6 +46,18 @@ io.on("connection", (socket) => {
       }
   });
 
+  socket.on("join-room", (roomId) => {
+    socket.join(roomId);
+  });
+
+  socket.on("leave-room", (roomId) => {
+    socket.leave(roomId);
+  });
+
+  socket.on("room-message", (message) => {
+    io.to(message.roomId).emit("new-room-message", message);
+  });
+
   socket.on("disconnect", () => {
       delete connectingUsersMap[userId];
       io.emit("showOnlineUsers", Object.keys(connectingUsersMap));

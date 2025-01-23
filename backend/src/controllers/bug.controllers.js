@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
 export const reportBug = async (req, res) => {
   try {
     const { title, description, priority, email } = req.body;
-    console.log(req.body)
     const mailOptions = {
       from: email,
       to: '1ms19ch001@gmail.com',
