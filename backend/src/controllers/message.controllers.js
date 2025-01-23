@@ -107,9 +107,8 @@ export const getRoomMessages = async (req, res) => {
   try {
     const { roomId } = req.params;
     const messages = await Message.find({ roomId })
-      .populate("senderId", "username fullName")
+      .populate("senderId")
       .sort({ createdAt: 1 });
-
     res.status(200).json(messages);
   } catch (error) {
     console.error("Error in getRoomMessages controller: ", error.message);

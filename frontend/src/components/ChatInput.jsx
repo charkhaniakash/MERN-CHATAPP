@@ -74,14 +74,20 @@ const ChatInput = ({ onSendMessage }) => {
   }, [selectedUser]);
 
   useEffect(() => {
-    socket.on("typing-status", (status) => {
-      setTypingStatus(status);
+    socket.on("user-typing", (typeHead) => {
+      setTypingStatus(typeHead);
+    });
+
+    socket.on("user-stop-typing", () => {
+      setTypingStatus("");
     });
 
     return () => {
-      socket.off("typing-status");
+      socket.off("user-typing");
+      socket.off("user-stop-typing");
     };
   }, [socket]);
+  
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];

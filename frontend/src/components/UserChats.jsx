@@ -23,12 +23,11 @@ const UserChats = () => {
           <h2 className="text-2xl font-bold">Put yout first chart here</h2>
         </NoChatMessages>
       )}
-      {messages.map((message,i) => (
+      {messages.map((message, i) => (
         <div
           key={i}
-          className={`chat ${
-            message.senderId === authUser._id ? "chat-end" : "chat-start"
-          }`}
+          className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"
+            }`}
           ref={messageEndRef}
         >
           <div>{message.senderId === authUser._id}</div>

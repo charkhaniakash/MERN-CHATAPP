@@ -27,30 +27,30 @@ const Sidebar = () => {
     return <SidebarSkeletonLoder />;
   }
 
-  const handelSelectUser=(user)=>{
-    console.log("????" , user)
+  const handelSelectUser = (user) => {
+    console.log("????", user)
     setSelectedUser(user)
   }
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       <button
-      onClick={() => setShowCreateRoom(true)}
-      className="inline-flex items-center px-3 py-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-    >
-      <Plus size={16} />
-      <span>Create Room</span>
-    </button>
+        onClick={() => setShowCreateRoom(true)}
+        className="inline-flex items-center px-3 py-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        <Plus size={16} />
+        <span>Create Room</span>
+      </button>
       {showCreateRoom && (
         <div className="modal modal-open">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Create or Join Room</h3>
             <RoomChat
               onClose={() => setShowCreateRoom(false)}
-              onRoomSelect={(room) => {
-                setSelectedRoom(room);
-                setShowCreateRoom(false);
-              }}
+              // onRoomSelect={(room) => {
+              //   setSelectedRoom(room);
+              //   setShowCreateRoom(false);
+              // }}
             />
             <div className="modal-action">
               <button

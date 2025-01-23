@@ -7,11 +7,11 @@ import { ContactRound, Linkedin, Mail } from "lucide-react";
 import RoomChatContainer from "../components/RoomChatContainer";
 
 const HomePage = () => {
-  const { selectedUser, selectedRoom  } = useChatStore();
+  const { selectedUser, selectedRoom } = useChatStore();
 
   return (
     <div className="h-screen bg-base-200">
- <div className="flex items-center justify-center pt-20 px-4">
+      <div className="flex items-center justify-center pt-20 px-4">
         <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-7xl h-[calc(100vh-8rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
             <Sidebar />
@@ -36,9 +36,9 @@ const HomePage = () => {
       <div className="ml-2 mt-2 mr-2 flex justify-between items-center text-sm">
         <div>Made with ♥️ by Akash </div>
         <div className="flex items-center gap-4">
-          <a 
-            href="https://www.linkedin.com/in/akash-charkhani-4375442a9/" 
-            target="_blank" 
+          <a
+            href="https://www.linkedin.com/in/akash-charkhani-4375442a9/"
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 hover:text-primary transition-colors"
           >

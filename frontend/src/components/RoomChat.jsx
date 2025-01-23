@@ -18,7 +18,6 @@ const RoomChat = ({ onClose }) => {
 
 
   const handleRoomSelect = (room) => {
-    console.log("...",room)
     setSelectedRoom(room);
     onClose(); 
   };

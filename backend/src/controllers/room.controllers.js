@@ -27,19 +27,19 @@ export const getRooms = async (req, res) => {
   }
 };
 
-export const addParticipant = async (req, res) => {
-  try {
-    const { roomId, userId } = req.body;
-    const room = await Room.findById(roomId);
-    if (!room) {
-      return res.status(404).json({ error: "Room not found" });
-    }
-    if (!room.participants.includes(userId)) {
-      room.participants.push(userId);
-      await room.save();
-    }
-    res.status(200).json(room);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// export const addParticipant = async (req, res) => {
+//   try {
+//     const { roomId, userId } = req.body;
+//     const room = await Room.findById(roomId);
+//     if (!room) {
+//       return res.status(404).json({ error: "Room not found" });
+//     }
+//     if (!room.participants.includes(userId)) {
+//       room.participants.push(userId);
+//       await room.save();
+//     }
+//     res.status(200).json(room);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };

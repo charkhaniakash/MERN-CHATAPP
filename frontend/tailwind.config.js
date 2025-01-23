@@ -5,6 +5,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        customGray: 'rgb(24 26 29)',
+      },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
