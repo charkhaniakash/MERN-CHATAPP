@@ -39,7 +39,7 @@ const Sidebar = () => {
 
       >
         <Plus size={16} />
-        <span>Create Room</span>
+        <span className="truncate">Create Room</span>
       </button>
       {showCreateRoom && (
         <div className="modal modal-open">
