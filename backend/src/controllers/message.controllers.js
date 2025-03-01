@@ -45,6 +45,60 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 
+// export const getUsersForSidebar = async (req, res) => {
+//   try {
+//     const loggedInUserId = req.user._id;
+
+//     // Use aggregation to get users with their latest message
+//     const usersWithMessages = await User.aggregate([
+//       {
+//         $match: { _id: { $ne: loggedInUserId } }, // Exclude logged-in user
+//       },
+//       {
+//         $lookup: {
+//           from: "messages",
+//           let: { userId: "$_id" },
+//           pipeline: [
+//             {
+//               $match: {
+//                 $expr: {
+//                   $or: [
+//                     { $and: [{ $eq: ["$senderId", loggedInUserId] }, { $eq: ["$receiverId", "$$userId"] }] },
+//                     { $and: [{ $eq: ["$senderId", "$$userId"] }, { $eq: ["$receiverId", loggedInUserId] }] },
+//                   ],
+//                 },
+//               },
+//             },
+//             { $sort: { createdAt: -1 } }, // Get latest message
+//             { $limit: 1 }, // Only return the most recent message
+//           ],
+//           as: "latestMessage",
+//         },
+//       },
+//       {
+//         $unwind: {
+//           path: "$latestMessage",
+//           preserveNullAndEmptyArrays: true, // If no message, keep user without breaking
+//         },
+//       },
+//       {
+//         $sort: { "latestMessage.createdAt": -1 },
+//       },
+//       {
+//         $project: {
+//           password: 0, // Exclude password field
+//         },
+//       },
+//     ]);
+
+//     res.status(200).json({ users: usersWithMessages });
+//   } catch (error) {
+//     console.log("Error in getUsersForSidebar controller: ", error.message);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
+
 export const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
