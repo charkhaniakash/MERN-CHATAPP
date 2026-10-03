@@ -8,6 +8,7 @@ const RoomChat = ({ onClose }) => {
     const [rooms, setRooms] = useState([]);
     const [newRoomName, setNewRoomName] = useState("");
     const [selectedUsers, setSelectedUsers] = useState([]);
+    const [validationError, setValidationError] = useState(null); // New state for validation error
     const { authUser } = useAuthStore();
     const { users, setSelectedRoom } = useChatStore();
 
@@ -32,6 +33,18 @@ const RoomChat = ({ onClose }) => {
     };
     const createRoom = async (e) => {
         e.preventDefault();
+        setValidationError(null); // Clear previous errors
+
+        // Client-side validation
+        if (newRoomName.trim() === "") {
+            setValidationError("Room name cannot be empty.");
+            return;
+        }
+        if (selectedUsers.length === 0) {
+            setValidationError("Please select at least one participant for the group chat.");
+            return;
+        }
+
         try {
             const { data } = await axiosInstance.post("/rooms/create", {
                 name: newRoomName,
@@ -42,6 +55,7 @@ const RoomChat = ({ onClose }) => {
             setSelectedUsers([]);
         } catch (error) {
             console.error("Error creating room:", error);
+            setValidationError("Failed to create room. Please try again."); // Generic error for API failure
         }
     };
 
@@ -88,6 +102,9 @@ const RoomChat = ({ onClose }) => {
                             ))}
                         </div>
                     </div>
+                    {validationError && (
+                        <p className="text-error text-sm mt-2">{validationError}</p>
+                    )}
                     <button type="submit" className="btn btn-primary w-full">
                         Add Participants
                     </button>
